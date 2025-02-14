@@ -54,7 +54,7 @@ def update(ticket_id: int, ticket: schemas.TicketUpdate, db: Session = Depends(g
     return existing_query
 
 # Delete Ticket
-@app.delete('/ticket/{ticket_id}', status_code=status.HTTP_204_NO_CONTENT, tags=["tickets"])
+@app.delete('/ticket/{ticket_id}', status_code=status.HTTP_200_OK, tags=["tickets"])
 def destroy(ticket_id: int, db: Session = Depends(get_db)):
     ticket_query = db.query(models.Ticket).filter(models.Ticket.id == ticket_id).first()
     if not ticket_query:
@@ -106,7 +106,7 @@ def update_comment(comment_id: int, comment: schemas.CommentUpdate, db: Session 
     return existing_comment
 
 # Delete comment
-@app.delete('/comment/{comment_id}', status_code=status.HTTP_204_NO_CONTENT, tags=["comments"])
+@app.delete('/comment/{comment_id}', status_code=status.HTTP_200_OK, tags=["comments"])
 def destroy_comment(comment_id: int, db: Session = Depends(get_db)):
     comment_query = db.query(models.Comment).filter(models.Comment.id == comment_id).first()
     if not comment_query:
