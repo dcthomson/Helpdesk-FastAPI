@@ -100,7 +100,3 @@ def update_comment(comment_id: int, comment: schemas.CommentUpdate, db: Session 
     db.commit()
     db.refresh(existing_comment)
     return existing_comment
-
-@app.post('/user', status_code=status.HTTP_200_OK, tags=["users"])
-def get_user(user=schemas.UserCreate, db: Session = Depends(get_db)):
-    new_user = models.User(user_id=user.id, user_name=user.name)
