@@ -18,6 +18,7 @@ class Ticket(TicketBase):
     id: int
     created: datetime
     updated: datetime
+    status: str
 
     class Config:
         from_attributes = True

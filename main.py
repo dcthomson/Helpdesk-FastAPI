@@ -18,7 +18,7 @@ def get_db():       # Dependency to get the database session
 
 @app.post("/ticket", status_code=status.HTTP_201_CREATED, tags=["tickets"])
 def create_ticket(ticket: schemas.TicketCreate, db: Session = Depends(get_db)):
-    new_ticket = models.Ticket(title=ticket.title, description=ticket.description)
+    new_ticket = models.Ticket(title=ticket.title, description=ticket.description, status='open')
     db.add(new_ticket)
     db.commit()
     db.refresh(new_ticket)

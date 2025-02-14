@@ -12,6 +12,7 @@ class Ticket(Base):
     description = Column(String)
     created = Column(DateTime, default=datetime.now(timezone.utc))
     updated = Column(DateTime, default=datetime.now(timezone.utc))
+    status = Column(String)
 
     comments = relationship("Comment", back_populates="ticket")
 
