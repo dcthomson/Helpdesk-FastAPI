@@ -26,6 +26,7 @@ class Ticket(TicketBase):
 class TicketUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
+    status: Optional[str] = None
 
     class Config:
         from_attributes = True
