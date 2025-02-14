@@ -36,15 +36,6 @@ def show(ticket_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Ticket {ticket_id} not found")
     return ticket_query
 
-@app.delete('/ticket/{ticket_id}', status_code=status.HTTP_204_NO_CONTENT, tags=["tickets"])
-def destroy(ticket_id: int, db: Session = Depends(get_db)):
-    ticket_query = db.query(models.Ticket).filter(models.Ticket.id == ticket_id).first()
-    if not ticket_query:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Ticket {ticket_id} not found")
-    db.delete(ticket_query)
-    db.commit()
-    return f"ticket {ticket_id} deleted"
-
 @app.put('/ticket/{ticket_id}', status_code=status.HTTP_202_ACCEPTED, tags=["tickets"])
 def update(ticket_id: int, ticket: schemas.TicketUpdate, db: Session = Depends(get_db)):
     ticket_query = db.query(models.Ticket).filter(models.Ticket.id == ticket_id)
@@ -57,6 +48,15 @@ def update(ticket_id: int, ticket: schemas.TicketUpdate, db: Session = Depends(g
     db.commit()
     db.refresh(existing_query)
     return existing_query
+
+@app.delete('/ticket/{ticket_id}', status_code=status.HTTP_204_NO_CONTENT, tags=["tickets"])
+def destroy(ticket_id: int, db: Session = Depends(get_db)):
+    ticket_query = db.query(models.Ticket).filter(models.Ticket.id == ticket_id).first()
+    if not ticket_query:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Ticket {ticket_id} not found")
+    db.delete(ticket_query)
+    db.commit()
+    return f"ticket {ticket_id} deleted"
 
 @app.post('/comment', status_code=status.HTTP_201_CREATED, tags=["comments"])
 def create_comment(comment: schemas.CommentCreate, db: Session = Depends(get_db)):
@@ -80,15 +80,6 @@ def show_comment(comment_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Comment {comment_id} not found")
     return comment_query
 
-@app.delete('/comment/{comment_id}', status_code=status.HTTP_204_NO_CONTENT, tags=["comments"])
-def destroy_comment(comment_id: int, db: Session = Depends(get_db)):
-    comment_query = db.query(models.Comment).filter(models.Comment.id == comment_id).first()
-    if not comment_query:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Comment {comment_id} not found")
-    db.delete(comment_query)
-    db.commit()
-    return f"comment {comment_id} deleted"
-
 @app.put('/comment/{comment_id}', status_code=status.HTTP_202_ACCEPTED, tags=["comments"])
 def update_comment(comment_id: int, comment: schemas.CommentUpdate, db: Session = Depends(get_db)):
     comment_query = db.query(models.Comment).filter(models.Comment.id == comment_id)
@@ -100,3 +91,12 @@ def update_comment(comment_id: int, comment: schemas.CommentUpdate, db: Session 
     db.commit()
     db.refresh(existing_comment)
     return existing_comment
+
+@app.delete('/comment/{comment_id}', status_code=status.HTTP_204_NO_CONTENT, tags=["comments"])
+def destroy_comment(comment_id: int, db: Session = Depends(get_db)):
+    comment_query = db.query(models.Comment).filter(models.Comment.id == comment_id).first()
+    if not comment_query:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Comment {comment_id} not found")
+    db.delete(comment_query)
+    db.commit()
+    return f"comment {comment_id} deleted"
